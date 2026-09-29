@@ -1,0 +1,304 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #fafafa;
+  color: #262626;
+}
+
+/* Instagram Logo & Branding */
+.brand-title {
+  font-family: 'Grand Hotel', cursive;
+  font-size: 38px;
+  font-weight: 500;
+  color: #262626;
+  text-decoration: none;
+}
+
+.logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.ig-logo-icon {
+  width: 52px;
+  height: 52px;
+  stroke: url(#ig-grad);
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  border-radius: 12px;
+  padding: 10px;
+  stroke: #ffffff;
+}
+
+.ig-logo-icon.small {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Authentication Container */
+.auth-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fafafa;
+}
+
+.auth-card {
+  background: #ffffff;
+  padding: 35px 40px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, textarea {
+  padding: 10px 8px;
+  background: #fafafa;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  font-size: 13px;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: #a8a8a8;
+}
+
+.btn-primary {
+  background-color: #0095f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #1877f2;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #dbdbdb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  color: #8e8e8e;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #dbdbdb;
+}
+
+.divider span {
+  padding: 0 14px;
+}
+
+.toggle-link {
+  font-size: 13px;
+  color: #262626;
+  cursor: pointer;
+}
+
+.toggle-link strong {
+  color: #0095f6;
+}
+
+.error-text {
+  color: #ed4956;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* Feed & Navigation */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.main-container {
+  max-width: 470px;
+  margin: 24px auto;
+  padding: 0 10px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.compose-card {
+  padding: 16px;
+}
+
+.compose-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.compose-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+/* Post Cards */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.post-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #e1306c;
+  padding: 1px;
+}
+
+.post-author {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post-image {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-body {
+  padding: 12px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #262626;
+}
+
+.action-btn.liked {
+  color: #ed4956;
+}
+
+.likes-count {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.caption {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.comment-form {
+  display: flex;
+  border-top: 1px solid #efefef;
+  padding-top: 8px;
+}
+
+.comment-form input {
+  border: none;
+  background: none;
+  flex-grow: 1;
+}
+
+.comment-form button {
+  background: none;
+  border: none;
+  color: #0095f6;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}

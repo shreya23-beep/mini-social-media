@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeShare • Feed</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #fafafa;
+      color: #262626;
+    }
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #dbdbdb;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-content {
+      max-width: 650px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .btn-nav {
+      background: #f3f4f6;
+      border: 1px solid #dbdbdb;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-nav:hover {
+      background: #e5e7eb;
+    }
+    .main-container {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #dbdbdb;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    /* Story Tray */
+    .stories-tray {
+      display: flex;
+      gap: 14px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    .stories-tray::-webkit-scrollbar {
+      display: none;
+    }
+    .story-bubble {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      max-width: 64px;
+    }
+    .story-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .story-ring.add-story {
+      background: #e5e7eb;
+      font-size: 26px;
+      color: #6366f1;
+      font-weight: bold;
+    }
+    .story-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      border: 2px solid #fff;
+    }
+    .story-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Compose Post */
+    .compose-card {
+      padding: 16px;
+    }
+    .compose-header {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #374151;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      background: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+    }
+    textarea:focus {
+      border-color: #6366f1;
+      background: #ffffff;
+    }
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .file-input-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .file-picker-btn {
+      padding: 8px 10px;
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: #6366f1;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+    .btn-primary:hover {
+      background-color: #4f46e5;
+    }
+
+    /* Post Header & Delete */
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+    }
+    .post-user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .post-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+    }
+    .post-author {
+      font-weight: 600;
+      font-size: 14px;
+      color: #111827;
+    }
+    .btn-delete-post {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #dc2626;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .btn-delete-post:hover {
+      background: #fecaca;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 520px;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+    .post-body {
+      padding: 12px;
+    }
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .likes-count {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    .caption {
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .comments-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid #f3f4f6;
+      padding-top: 10px;
+    }
+    .comment-form input {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 13px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      background: #fafafa;
+      outline: none;
+    }
+
+    /* Modal for Story Viewer */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    .story-viewer-content {
+      position: relative;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+    }
+    .story-viewer-img {
+      width: 100%;
+      max-height: 520px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .story-viewer-topbar {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .story-viewer-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+    .btn-delete-story {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #dc2626;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-delete-story:hover {
+      background: #fecaca;
+    }
+    .close-modal-btn {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* DM Modal */
+    .dm-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 150;
+    }
+    .dm-container {
+      background: #fff;
+      width: 90%;
+      max-width: 650px;
+      height: 480px;
+      border-radius: 12px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .dm-sidebar {
+      width: 40%;
+      border-right: 1px solid #dbdbdb;
+      display: flex;
+      flex-direction: column;
+    }
+    .dm-search-bar {
+      padding: 10px;
+      border-bottom: 1px solid #dbdbdb;
+      background: #fafafa;
+    }
+    .dm-search-bar input {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 13px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      outline: none;
+      background: #fff;
+    }
+    .dm-users-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .dm-user-item {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .dm-user-item:hover, .dm-user-item.active {
+      background: #f3f4f6;
+    }
+    .dm-chat-area {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+    }
+    .dm-chat-header {
+      padding: 12px;
+      border-bottom: 1px solid #dbdbdb;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dm-messages {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .msg-bubble {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 16px;
+      font-size: 13px;
+    }
+    .msg-mine {
+      align-self: flex-end;
+      background: #6366f1;
+      color: #fff;
+    }
+    .msg-theirs {
+      align-self: flex-start;
+      background: #f1f1f1;
+      color: #262626;
+    }
+    .dm-chat-form {
+      display: flex;
+      border-top: 1px solid #dbdbdb;
+      padding: 8px;
+      gap: 8px;
+    }
+    .dm-chat-form input {
+      border: 1px solid #dbdbdb;
+      background: #fafafa;
+      border-radius: 6px;
+      padding: 6px 10px;
+      flex: 1;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand-area">
+        <svg class="brand-logo-icon" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="22" stroke="url(#nav_grad)" stroke-width="4"/>
+          <circle cx="24" cy="24" r="9" fill="url(#nav_grad)"/>
+          <circle cx="34" cy="14" r="4" fill="#6366f1"/>
+          <defs>
+            <linearGradient id="nav_grad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ec4899"/>
+              <stop offset="1" stop-color="#6366f1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-title">VibeShare</span>
+      </div>
+      <div class="user-controls">
+        <span id="nav-user-greeting">@username</span>
+        <button class="btn-nav" onclick="openMessages()">💬 Messages</button>
+        <button id="logout-btn" class="btn-nav">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Story Tray -->
+    <div class="card">
+      <div class="stories-tray" id="stories-container">
+        <div class="story-bubble" onclick="triggerStoryUpload()">
+          <div class="story-ring add-story">+</div>
+          <span class="story-label">Your story</span>
+        </div>
+      </div>
+      <input type="file" id="story-file-picker" accept="image/*" style="display: none;" onchange="handleStoryUpload(event)" />
+    </div>
+
+    <!-- Create Post Card -->
+    <section class="card compose-card">
+      <div class="compose-header">Create New Post</div>
+      <form id="create-post-form">
+        <textarea id="post-content" rows="2" placeholder="Write a caption..." required></textarea>
+        <div class="file-input-wrapper">
+          <label class="file-input-label">Attach Photo from Computer:</label>
+          <input type="file" id="post-image-file" accept="image/*" class="file-picker-btn" />
+        </div>
+        <button type="submit" class="btn-primary">Share</button>
+      </form>
+    </section>
+
+    <!-- Post Feed -->
+    <section id="feed-container">
+      <p style="text-align: center; color: #8e8e8e; padding: 20px;">Loading posts...</p>
+    </section>
+  </main>
+
+  <!-- Story Viewing Modal with Delete Option -->
+  <div class="modal-overlay" id="story-modal">
+    <div class="story-viewer-content">
+      <button class="close-modal-btn" onclick="closeStory()">&times;</button>
+      <div class="story-viewer-topbar">
+        <div class="story-viewer-user">
+          <img id="modal-story-avatar" src="" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" />
+          <span id="modal-story-author"></span>
+        </div>
+        <button id="modal-story-delete-btn" class="btn-delete-story" style="display:none;" onclick="deleteCurrentStory()">🗑️ Delete</button>
+      </div>
+      <img id="modal-story-img" class="story-viewer-img" src="" alt="Story" />
+    </div>
+  </div>
+
+  <!-- Direct Messaging Modal with Invite Link -->
+  <div class="dm-modal-overlay" id="dm-modal">
+    <div class="dm-container">
+      <div class="dm-sidebar">
+        <div class="dm-search-bar">
+          <input 
+            type="text" 
+            id="user-search-input" 
+            placeholder="🔍 Find someone..." 
+            oninput="searchUsers(this.value)" 
+          />
+        </div>
+        <div class="dm-users-list" id="dm-users"></div>
+      </div>
+      <div class="dm-chat-area">
+        <div class="dm-chat-header">
+          <span id="dm-active-user-name">Select a conversation</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button class="btn-nav" style="font-size:11px; padding:4px 8px; background:#eff6ff; color:#3b82f6; border-color:#bfdbfe;" onclick="copyChatInviteLink()">🔗 Invite Link</button>
+            <button style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeMessages()">&times;</button>
+          </div>
+        </div>
+        <div class="dm-messages" id="dm-messages-container">
+          <p style="text-align:center; color:#9ca3af; margin-top:20px;">Pick an account on the left to chat</p>
+        </div>
+        <form class="dm-chat-form" id="dm-send-form" style="display:none;" onsubmit="sendMessage(event)">
+          <input type="text" id="dm-input-text" placeholder="Type a message..." required />
+          <button type="submit" class="btn-primary" style="padding:6px 12px;">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
